@@ -1,0 +1,69 @@
+.swiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 400px;
+  /* height: 300px; */
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  /* height: 100%; */
+  /* object-fit: cover; */
+}
+
+.mySwiper .swiper-slide {
+  transition: all 0.4s ease;
+  opacity: 0.4;
+}
+
+.mySwiper .swiper-slide-active {
+  opacity: 1;
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* Optional: side slides slight blur */
+.mySwiper .swiper-slide:not(.swiper-slide-active) {
+  filter: blur(2px);
+}
+
+
+
+
+
+
+
+
+
+/* .skew-card {
+  transform: skewX(-8deg);
+  transition: all 0.4s ease;
+} */
+
+/* Fix inner content */
+/* .skew-fix {
+  transform: skewX(8deg);
+} */
+
+/* Active slide more straight + zoom */
+.mySwiper .swiper-slide-active .skew-card {
+  transform: skewX(0deg) scale(1.05);
+}
+
+/* Side slides more skewed */
+ .mySwiper .swiper-slide:not(.swiper-slide-active) .skew-card {
+  transform: skewX(-10deg) scale(0.9);
+} 
+.mySwiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+.mySwiper .swiper-slide {
+  will-change: transform;
+} 
