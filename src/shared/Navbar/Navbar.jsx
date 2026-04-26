@@ -13,7 +13,7 @@ const Navbar = () => {
        transition-all duration-300 ease-in-out
        ${isActive ? "font-bold text-[#1d0f0f]" : ""}`
           }
-          to="/services"
+          to="/"
         >
           Services
         </NavLink>
@@ -114,7 +114,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl"><Logo /></a>
+        <a className=" text-xl"><Logo /></a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 " style={{zIndex: 10}}>{links}</ul>

@@ -11,26 +11,26 @@ const Coverage = () => {
     e.preventDefault();
     const searchText = e.target.location.value;
     const district = serviceCenter.find(c => c.district.toLowerCase().includes(searchText.toLowerCase()))
-    // if(district) {
-    //   const coords = [district.latitude, district.longitude]
-    //   mapRef.current.flyTo(coords, 13)
-    // }
+    if(district) {
+      const coords = [district.latitude, district.longitude]
+      mapRef.current.flyTo(coords, 13)
+    }
 
-    if (district && mapRef.current) {
-    const lat = district.latitude;
-    const lng = district.longitude;
+  //   if (district && mapRef.current) {
+  //   const lat = district.latitude;
+  //   const lng = district.longitude;
 
-    // create small bounds around the point
-    const bounds = [
-      [lat - 0.05, lng - 0.05], // southwest
-      [lat + 0.05, lng + 0.05], // northeast
-    ];
+  //   // create small bounds around the point
+  //   const bounds = [
+  //     [lat - 0.05, lng - 0.05], // southwest
+  //     [lat + 0.05, lng + 0.05], // northeast
+  //   ];
 
-    mapRef.current.flyToBounds(bounds, {
-      padding: [50, 50],
-      duration: 1.5,
-    });
-  }
+  //   mapRef.current.flyToBounds(bounds, {
+  //     padding: [50, 50],
+  //     duration: 1.5,
+  //   });
+  // }
   };
   // console.log(serviceCenter);
   return (
@@ -82,9 +82,9 @@ const Coverage = () => {
             We deliver element all over Bangladesh
           </h4>
 
-          <div className="map h-200">
+          <div className="map h-100">
             <MapContainer
-              className="h-200"
+              className="h-100 rounded-2xl"
               center={position}
               zoom={8}
               scrollWheelZoom={false}
