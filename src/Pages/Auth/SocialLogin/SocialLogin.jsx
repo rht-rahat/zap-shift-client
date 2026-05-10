@@ -13,11 +13,12 @@ const SocialLogin = () => {
   const from = location.state?.from?.pathname || "/";
 
   const handleGoogleLogin = async () => {
-    const toastId = toast.loading("Logging in... Please wait");
+    const toastId = toast.loading("Logging... Please wait");
     try {
-      const result = await googleLogin();
+       await googleLogin();
 
-      console.log("User Login social login", result.user);
+      // console.log("User Login social login", result.user);
+
       toast.update(toastId, {
         render: "Login Successful 🎉",
         type: "success",
@@ -30,7 +31,7 @@ const SocialLogin = () => {
         navigate(from, { replace: true });
       }, 1000);
     } catch (error) {
-      console.log("from social login", error.message);
+      // console.log("from social login", error.message);
       toast.update(toastId, {
         render: error.message || "Login Failed ❌",
         type: "error",

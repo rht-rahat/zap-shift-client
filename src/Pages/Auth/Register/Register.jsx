@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Watch } from "react-hook-form";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../../contexts/AuthContext/AuthContext";
 import useAuth from "../../../hooks/useAuth";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Register = () => {
   const [toggle, setToggle] = useState(true);
-  const { createUserEmailAndPassword, loading } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const { createUserEmailAndPassword, updateUser } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+
+  // console.log("From Register page", location);
 
   // React Form Hook
 
@@ -16,22 +26,83 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
   } = useForm();
 
   const handleRegistration = async (data) => {
-    try {
-      const result = await createUserEmailAndPassword(
-        data.email,
-        data.password,
-      );
+    // console.log("From submit data", data);
+    //   console.log(data.photo);
+    // console.log(data.photo[0]);
 
-      console.log("User Created:", result.user);
+    const toastId = toast.loading("Creating Account");
+    setIsLoading(true);
+
+    try {
+      const profileImage = data.photo[0];
+      const formData = new FormData();
+      formData.append("image", profileImage);
+      const image_api_url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGESECRETE}`;
+
+      const imageUpload = await axios.post(image_api_url, formData);
+
+      const photoUrl = imageUpload.data.data.url;
+
+      toast.update(toastId, {
+        render: "Photo uploaded. Creating account...",
+        isLoading: true,
+      });
+
+      // const profile = {};
+
+      await createUserEmailAndPassword(data.email, data.password);
+
+      await updateUser({
+        displayName: data.name,
+        photoURL: photoUrl,
+      });
+
+      // console.log("User Created:", result.user);
+
+      toast.update(toastId, {
+        render: "Create Successful Account",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
 
       // optional form clear
       reset();
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 1000);
     } catch (error) {
       console.error("Registration Error:", error.message);
+      console.error("Registration Error:", error.message);
+
+      let errorMessage = "Something went wrong";
+
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "Email already exists";
+      } else if (error.code === "auth/weak-password") {
+        errorMessage = "Password is too weak";
+      } else if (error.code === "auth/invalid-email") {
+        errorMessage = "Invalid email address";
+      }
+
+      toast.update(toastId, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    } finally {
+      // 🔥 Stop button loading after all process ends
+      setIsLoading(false);
     }
   };
 
@@ -58,6 +129,64 @@ const Register = () => {
             <p className="text-sm text-rose-500 mt-1">
               {errors?.name?.message}
             </p>
+          )}
+        </div>
+
+        {/* photo image upload */}
+
+        <div>
+          <label className="text-sm font-medium">Profile Photo</label>
+
+          <label className="mt-2 flex flex-col items-center justify-center w-full h-30 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+            {/* Preview Image */}
+            {watch("photo")?.[0] ? (
+              <img
+                src={URL.createObjectURL(watch("photo")[0])}
+                alt="Preview"
+                className="w-24 h-24 object-cover rounded-full border"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center text-gray-500">
+                <svg
+                  className="w-6 h-6 mb-2"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 16V4m0 12l-3-3m3 3l3-3M4 20h16"
+                  />
+                </svg>
+                <p className="text-sm font-medium">
+                  Click to upload or drag & drop
+                </p>
+                <p className="text-xs text-gray-400">
+                  PNG, JPG, JPEG (Max 5MB)
+                </p>
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              {...register("photo", {
+                required: "Profile photo is required",
+                validate: {
+                  fileSize: (files) =>
+                    !files[0] ||
+                    files[0].size <= 5000000 ||
+                    "Max file size is 5MB",
+                },
+              })}
+            />
+          </label>
+
+          {errors.photo && (
+            <p className="text-red-500 text-sm mt-1">{errors.photo.message}</p>
           )}
         </div>
 
@@ -126,10 +255,10 @@ const Register = () => {
         {/* Button */}
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoading}
           className="btn w-full bg-lime-400 border-none text-black"
         >
-          {loading ? (
+          {isLoading ? (
             <>
               <span className="loading loading-spinner loading-sm"></span>
               Creating Account...
@@ -144,13 +273,15 @@ const Register = () => {
         {/* Register */}
         <p className="text-sm">
           Already have an account?{" "}
-          <Link to="/login" className="text-lime-600 font-medium">
+          <Link
+            state={{ from: location?.state?.from }}
+            to="/login"
+            className="text-lime-600 font-medium"
+          >
             Login
           </Link>
         </p>
         {/* <div className="divider">OR</div> */}
-        
-
       </form>
     </div>
   );

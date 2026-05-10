@@ -9,7 +9,7 @@ import "./style.css";
 
 const Reviews = ({ reviewsPromise }) => {
   const testimonials = use(reviewsPromise);
-  console.log(testimonials);
+  // console.log(testimonials);
   return (
     <div className="bg-gray-100 py-20">
       <div className="max-w-6xl mx-auto text-center">

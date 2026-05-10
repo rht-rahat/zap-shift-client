@@ -8,33 +8,31 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   const logOutUser = async () => {
-  const toastId = toast.loading("Logging out... Please wait");
+    const toastId = toast.loading("Logging out... Please wait");
 
-  try {
-    await logout();
+    try {
+      await logout();
 
-    toast.update(toastId, {
-      render: "Logout Successful 👋",
-      type: "success",
-      isLoading: false,
-      autoClose: 2000,
-      closeOnClick: true,
-      pauseOnHover: true,
-    });
+      toast.update(toastId, {
+        render: "Logout Successful 👋",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: error.message || "Logout Failed ❌",
+        type: "error",
+        isLoading: false,
+        autoClose: 4000,
+        closeOnClick: true,
+      });
 
-  } catch (error) {
-    toast.update(toastId, {
-      render: error.message || "Logout Failed ❌",
-      type: "error",
-      isLoading: false,
-      autoClose: 4000,
-      closeOnClick: true,
-    });
-
-    console.log("Logout Error:", error.message);
-  }
-};
-
+      // console.log("Logout Error:", error.message);
+    }
+  };
 
   // console.log("From Navbar", user);
   const links = (
@@ -99,6 +97,19 @@ const Navbar = () => {
        transition-all duration-300 ease-in-out
        ${isActive ? "font-bold text-[#1d0f0f]" : ""}`
           }
+          to="/send-parcel"
+        >
+          Send Parcel
+        </NavLink>
+      </li>
+      <li className="font-medium text-[16px] text-secondary">
+        <NavLink
+          className={({ isActive }) =>
+            `hover:bg-transparent hover:text-[#1d0f0f] 
+       focus:bg-transparent active:bg-transparent 
+       transition-all duration-300 ease-in-out
+       ${isActive ? "font-bold text-[#1d0f0f]" : ""}`
+          }
           to="/blog"
         >
           Blog
@@ -117,6 +128,23 @@ const Navbar = () => {
           Contact
         </NavLink>
       </li>
+      {user && (
+        <>
+          <li className="font-medium text-[16px] text-secondary">
+            <NavLink
+              className={({ isActive }) =>
+                `hover:bg-transparent hover:text-[#1d0f0f] 
+           focus:bg-transparent active:bg-transparent 
+           transition-all duration-300 ease-in-out
+           ${isActive ? "font-bold text-[#1d0f0f]" : ""}`
+              }
+              to="/dashboard/my-parcels"
+            >
+              My Parcels
+            </NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (
@@ -148,9 +176,9 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          <a className=" text-xl">
+          <div className=" text-xl">
             <Logo />
-          </a>
+          </div>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 " style={{ zIndex: 10 }}>
@@ -210,11 +238,14 @@ const Navbar = () => {
               <Link to="/login" className="btn">
                 Sign In
               </Link>
-              <Link to="/register" className="btn btn-primary text-black">
+              {/* <Link to="/register" className="btn btn-primary text-black">
                 Sign Up
-              </Link>
+              </Link> */}
             </>
           )}
+          <Link to="/rider" className="btn btn-primary font-bold text-black">
+            Be A Rider
+          </Link>
         </div>
       </div>
     </div>

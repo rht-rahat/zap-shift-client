@@ -3,7 +3,7 @@ import servicePhoto from "../../assets/service.png";
 import Marquee from "react-fast-marquee";
 
 const OurServices = () => {
-  console.log("Marquee:", Marquee);
+  // console.log("Marquee:", Marquee);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +20,8 @@ const OurServices = () => {
     return <h1>Loading...</h1>;
   }
 
-  console.log("fetch data services", services);
+  // console.log("fetch data services", services);
+
   return (
     <div className="bg-[#03373D] p-5 rounded-2xl">
       {/* our services heading */}

@@ -14,8 +14,12 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+ 
+
   // যদি private route থেকে আসে তাহলে সেখানে যাবে, না হলে home
   const from = location.state?.from?.pathname || "/";
+
+  
 
   const {
     register,
@@ -28,8 +32,10 @@ const Login = () => {
     const toastId = toast.loading("Logging in... Please wait");
 
     try {
-      const result = await signInUser(data.email, data.password);
-      console.log("User Login", result.user);
+       await signInUser(data.email, data.password);
+
+      // console.log("User Login", result.user);
+
       toast.update(toastId, {
         render: "Login Successful 🎉",
         type: "success",
@@ -47,7 +53,7 @@ const Login = () => {
 
 
     } catch (error) {
-      console.log("From Login page", error.message);
+      // console.log("From Login page", error.message);
       toast.update(toastId, {
         render: error.message || "Login Failed ❌",
         type: "error",
@@ -143,7 +149,7 @@ const Login = () => {
         {/* Register */}
         <p className="text-sm">
           Don't have an account?{" "}
-          <Link to="/register" className="text-lime-600 font-medium">
+          <Link state={{ from: location.state?.from }} to="/register" className="text-lime-600 font-medium">
             Register
           </Link>
         </p>
