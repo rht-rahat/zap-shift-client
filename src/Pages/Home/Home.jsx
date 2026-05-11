@@ -9,7 +9,7 @@ import Reviews from './Reviews';
 import FawAccordion from './FaqAccordion';
 
 
-const reviewsPromise = fetch("reviews.json").then(res => res.json())
+const reviewsPromise = fetch("/reviews.json").then(res => res.json())
 
 const Home = () => {
   return (

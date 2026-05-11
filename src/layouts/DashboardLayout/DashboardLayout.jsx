@@ -15,13 +15,11 @@ import {
   IoChevronForward,
 } from "react-icons/io5";
 
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../hooks/useAuth";
 
 const DashboardLayout = () => {
-
-  const {user} = useAuth()
-
+  const { user } = useAuth();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const menuItems = [
@@ -169,9 +167,11 @@ const DashboardLayout = () => {
         <aside className="flex min-h-full flex-col bg-base-100 border-r border-base-300 duration-300 is-drawer-close:w-20 is-drawer-open:w-72">
           {/* LOGO */}
           <div className="h-16 border-b border-base-300 flex items-center px-5">
-            <h1 className="text-2xl font-extrabold text-primary tracking-wide">
-              Z
-            </h1>
+            <Link to="/">
+              <h1 className="text-2xl font-extrabold text-black tracking-wide">
+                Z
+              </h1>
+            </Link>
           </div>
 
           {/* MENU */}
