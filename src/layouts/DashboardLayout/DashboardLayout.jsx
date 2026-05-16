@@ -20,9 +20,10 @@ import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { FaUserFriends } from "react-icons/fa";
 import useRole from "../../hooks/useRole";
+import { toast } from "react-toastify";
 
 const DashboardLayout = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { role } = useRole();
   console.log("role On Dashboard:", role);
 
@@ -66,23 +67,50 @@ const DashboardLayout = () => {
     },
   ];
 
-  const generalItems = [
-    {
-      name: "Settings",
-      path: "/dashboard/settings",
-      icon: <IoSettingsOutline size={20} />,
-    },
-    {
-      name: "Change Password",
-      path: "/dashboard/change-password",
-      icon: <IoLockClosedOutline size={20} />,
-    },
-    {
-      name: "Help",
-      path: "/dashboard/help",
-      icon: <IoHelpCircleOutline size={20} />,
-    },
-  ];
+  // const generalItems = [
+  //   {
+  //     name: "Settings",
+  //     path: "/dashboard/settings",
+  //     icon: <IoSettingsOutline size={20} />,
+  //   },
+  //   {
+  //     name: "Change Password",
+  //     path: "/dashboard/change-password",
+  //     icon: <IoLockClosedOutline size={20} />,
+  //   },
+  //   {
+  //     name: "Help",
+  //     path: "/dashboard/help",
+  //     icon: <IoHelpCircleOutline size={20} />,
+  //   },
+  // ];
+
+  const logOutUser = async () => {
+      const toastId = toast.loading("Logging out... Please wait");
+  
+      try {
+        await logout();
+  
+        toast.update(toastId, {
+          render: "Logout Successful 👋",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+      } catch (error) {
+        toast.update(toastId, {
+          render: error.message || "Logout Failed ❌",
+          type: "error",
+          isLoading: false,
+          autoClose: 4000,
+          closeOnClick: true,
+        });
+  
+        // console.log("Logout Error:", error.message);
+      }
+    };
 
   return (
     <div className="drawer lg:drawer-open bg-base-200 min-h-screen">
@@ -227,12 +255,12 @@ const DashboardLayout = () => {
 
             <div className="divider my-5"></div>
 
-            <p className="text-xs font-semibold text-base-content/50 px-3 mb-2">
+            {/* <p className="text-xs font-semibold text-base-content/50 px-3 mb-2">
               GENERAL
-            </p>
+            </p> */}
 
             <ul className="menu gap-1 w-full">
-              {generalItems.map((item) => (
+              {/* {generalItems.map((item) => (
                 <li key={item.name}>
                   <NavLink
                     to={item.path}
@@ -248,11 +276,13 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">{item.name}</span>
                   </NavLink>
                 </li>
-              ))}
+              ))} */}
 
               {/* LOGOUT */}
               <li className="mt-2">
-                <button className="rounded-xl flex items-center gap-3 text-error hover:bg-error/10">
+                <button
+                onClick={logOutUser}
+                className="rounded-xl flex items-center gap-3 text-error hover:bg-error/10">
                   <span
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="Logout"

@@ -20,6 +20,7 @@ const ApprovedRiders = () => {
       return res.data;
     },
   });
+  
 
   const updateRiderStatus = async (rider, status) => {
     console.log(rider, rider.email);
@@ -27,7 +28,7 @@ const ApprovedRiders = () => {
     const res = await axiosSecure.patch(`/riders/${rider._id}`, updateInfo);
     console.log(res.data);
     if (res.data.modifiedCount) {
-      toast.success(`${rider.name} রাইডার হিসেবে ${status} করা হয়েছে ।`);
+      toast.success(`${rider?.displayName} রাইডার হিসেবে ${status} করা হয়েছে ।`);
       console.log("riderId", res.data);
     }
     refetch();
@@ -71,11 +72,11 @@ const ApprovedRiders = () => {
   return (
     <div className="card bg-base-100 shadow-sm">
       <h1 className="text-2xl font-extrabold px-5">
-        Total parcels: {riders.length}
+        Total Riders Application: {riders.length}
       </h1>
       <div className="card-body">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="card-title">All Deliveries</h2>
+          <h2 className="card-title">All Riders Application</h2>
 
           {/* <button className="btn btn-primary btn-sm">+ Add Delivery</button> */}
         </div>

@@ -1,13 +1,14 @@
-import Lottie from "lottie-react";
+import { DotLottieReact, DotLottieWorkerReact } from '@lottiefiles/dotlottie-react';
 import forbiddenAnimation from "../../assets/json/forbidden.json";
 import { Link } from "react-router";
 
 const Forbidden = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Lottie
-        animationData={forbiddenAnimation}
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <DotLottieWorkerReact
+        data={forbiddenAnimation} // এখানে animationData এর বদলে শুধু data হবে
         loop={false}
+        autoplay
         className="w-60"
       />
 
@@ -24,7 +25,7 @@ const Forbidden = () => {
           Go to Home
         </Link>
 
-        <Link className="btn btn-secondary" to="/dashboard">
+        <Link className="btn btn-secondary" to="/dashboard/my-parcels">
           Go to Dashboard
         </Link>
       </div>

@@ -95,6 +95,7 @@ const MyParcels = () => {
                 <th>Parcels Name</th>
                 <th>Status</th>
                 <th>Amount</th>
+                <th>Delivery Status</th>
                 {/* <th>Payment</th> */}
                 <th>Action</th>
               </tr>
@@ -174,17 +175,17 @@ const MyParcels = () => {
 
                     <td>৳{parcel.cost}</td>
 
-                    {/* <td>
+                    <td>
                       <div
                         className={`badge ${
-                          parcel.payment === "paid"
+                          parcel.deliveryStatus
                             ? "badge-success"
                             : "badge-error"
                         }`}
                       >
-                        {parcel.payment || "Paid"}
+                        {!parcel?.deliveryStatus ? "no status": parcel?.deliveryStatus}
                       </div>
-                    </td> */}
+                    </td>
 
                     <td>
                       <div className="flex gap-2 items-center">
