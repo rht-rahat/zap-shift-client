@@ -101,6 +101,7 @@ const AuthProvider = ({ children }) => {
 
     // 🔥 Important: auth check complete
     setLoading(false);
+    // console.log(currentUser);
   });
 
   return () => {

@@ -2,9 +2,11 @@ import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const SocialLogin = () => {
   const { googleLogin, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,9 +17,17 @@ const SocialLogin = () => {
   const handleGoogleLogin = async () => {
     const toastId = toast.loading("Logging... Please wait");
     try {
-       await googleLogin();
-
+       const res = await googleLogin();
+       console.log("from social",res.user);
       // console.log("User Login social login", result.user);
+
+      const userInfo = {
+        email: res.user.email,
+        displayName: res.user.name,
+        photoURL: res.user.photoURL
+      }
+      const result = await axiosSecure.post("/users", userInfo)
+      console.log("save in data base", result.data.message);
 
       toast.update(toastId, {
         render: "Login Successful 🎉",

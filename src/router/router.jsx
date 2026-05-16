@@ -13,6 +13,13 @@ import PrivateRoute from "./PrivateRoute";
 import SendParcel from "../Pages/SendParcel/SendParcel";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import MyParcels from "../Pages/Dashboard/MyParcels";
+import Payment from "../Pages/Payment/Payment";
+import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
+import PaymentCancel from "../Pages/Payment/PaymentCancel ";
+import ParcelsHistory from "../Pages/Dashboard/ParcelsHistory";
+import ApprovedRiders from "../Pages/Dashboard/ApprovedRiders/ApprovedRiders";
+import UserManagement from "../Pages/Dashboard/UserManagement/UserManagement";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +42,7 @@ export const router = createBrowserRouter([
             <Rider />
           </PrivateRoute>
         ),
+        loader: () => fetch("/warehouses.json").then((res) => res.json()),
       },
       {
         path: "send-Parcel",
@@ -81,7 +89,32 @@ export const router = createBrowserRouter([
       {
         path: 'my-parcels',
         Component: MyParcels
-      }
+      },
+      {
+        path: 'payment/:parcelID',
+        Component: Payment
+      },
+      {
+        path: 'payment-success',
+        Component: PaymentSuccess
+      },
+      {
+        path: 'payment-cancelled',
+        Component: PaymentCancel
+      },
+      {
+        path: 'payment-history',
+        Component: ParcelsHistory
+      },
+      {
+        path: 'approved-riders',
+        Component: ApprovedRiders
+      },
+      {
+        path: 'user-management',
+        element: <AdminRoute><UserManagement/></AdminRoute>
+        // Component: UserManagement
+      },
     ]
   }
 ]);

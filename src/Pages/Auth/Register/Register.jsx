@@ -7,11 +7,13 @@ import useAuth from "../../../hooks/useAuth";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
 import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
   const [toggle, setToggle] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { createUserEmailAndPassword, updateUser } = useAuth();
+  const axiosSecure = useAxiosSecure()
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,7 +48,17 @@ const Register = () => {
 
       const imageUpload = await axios.post(image_api_url, formData);
 
-      const photoUrl = imageUpload.data.data.url;
+      const photoURL = imageUpload.data.data.url;
+
+      const userInfo = {
+        email: data.email,
+        displayName: data.name,
+        photoURL
+      }
+
+      const res = await axiosSecure.post("/users", userInfo)
+
+      console.log("user Created in database:", res.data);
 
       toast.update(toastId, {
         render: "Photo uploaded. Creating account...",
@@ -57,9 +69,11 @@ const Register = () => {
 
       await createUserEmailAndPassword(data.email, data.password);
 
+      
+
       await updateUser({
         displayName: data.name,
-        photoURL: photoUrl,
+        photoURL: photoURL,
       });
 
       // console.log("User Created:", result.user);

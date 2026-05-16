@@ -14,12 +14,17 @@ import {
   IoChevronBack,
   IoChevronForward,
 } from "react-icons/io5";
+import { RiEBike2Line } from "react-icons/ri";
 
 import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import { FaUserFriends } from "react-icons/fa";
+import useRole from "../../hooks/useRole";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
+  const { role } = useRole();
+  console.log("role On Dashboard:", role);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const menuItems = [
@@ -34,15 +39,26 @@ const DashboardLayout = () => {
       icon: <IoCubeOutline size={20} />,
     },
     {
-      name: "Invoices",
-      path: "/dashboard/invoices",
+      name: "Payments History",
+      path: "/dashboard/payment-history",
       icon: <IoDocumentTextOutline size={20} />,
     },
-    {
-      name: "Stores",
-      path: "/dashboard/stores",
-      icon: <IoStorefrontOutline size={20} />,
-    },
+
+    ...(role === "admin"
+      ? [
+          {
+            name: "Riders",
+            path: "/dashboard/approved-riders",
+            icon: <RiEBike2Line size={20} />,
+          },
+          {
+            name: "User Management",
+            path: "/dashboard/user-management",
+            icon: <FaUserFriends size={20} />,
+          },
+        ]
+      : []),
+
     {
       name: "Coverage Area",
       path: "/dashboard/coverage",
