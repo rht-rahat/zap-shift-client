@@ -15,10 +15,11 @@ import {
   IoChevronForward,
 } from "react-icons/io5";
 import { RiEBike2Line } from "react-icons/ri";
+import { MdIncompleteCircle, MdOutlineAssignmentTurnedIn } from "react-icons/md";
 
 import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../hooks/useAuth";
-import { FaUserFriends } from "react-icons/fa";
+import { FaTasks, FaUserFriends } from "react-icons/fa";
 import useRole from "../../hooks/useRole";
 import { toast } from "react-toastify";
 
@@ -34,16 +35,35 @@ const DashboardLayout = () => {
     //   path: "/dashboard",
     //   icon: <IoGridOutline size={20} />,
     // },
-    {
-      name: "My Parcels",
-      path: "/dashboard/my-parcels",
-      icon: <IoCubeOutline size={20} />,
-    },
-    {
-      name: "Payments History",
-      path: "/dashboard/payment-history",
-      icon: <IoDocumentTextOutline size={20} />,
-    },
+    ...(role === "user"
+      ? [
+          {
+            name: "My Parcels",
+            path: "/dashboard/my-parcels",
+            icon: <IoCubeOutline size={20} />,
+          },
+          {
+            name: "Payments History",
+            path: "/dashboard/payment-history",
+            icon: <IoDocumentTextOutline size={20} />,
+          },
+        ]
+      : []),
+
+    ...(role === "rider"
+      ? [
+          {
+            name: "Assigned Deliveries",
+            path: "/dashboard/assigned-deliveries",
+            icon: <FaTasks size={20} />,
+          },
+          {
+            name: "Completed Deliveries",
+            path: "/dashboard/completed-deliveries",
+            icon: <MdIncompleteCircle size={20} />,
+          },
+        ]
+      : []),
 
     ...(role === "admin"
       ? [
@@ -51,6 +71,11 @@ const DashboardLayout = () => {
             name: "Riders",
             path: "/dashboard/approved-riders",
             icon: <RiEBike2Line size={20} />,
+          },
+          {
+            name: "Assign Riders",
+            path: "/dashboard/assign-riders",
+            icon: <MdOutlineAssignmentTurnedIn size={20} />,
           },
           {
             name: "User Management",
@@ -62,7 +87,7 @@ const DashboardLayout = () => {
 
     {
       name: "Coverage Area",
-      path: "/dashboard/coverage",
+      path: "/coverage",
       icon: <IoLocationOutline size={20} />,
     },
   ];
@@ -86,31 +111,31 @@ const DashboardLayout = () => {
   // ];
 
   const logOutUser = async () => {
-      const toastId = toast.loading("Logging out... Please wait");
-  
-      try {
-        await logout();
-  
-        toast.update(toastId, {
-          render: "Logout Successful 👋",
-          type: "success",
-          isLoading: false,
-          autoClose: 2000,
-          closeOnClick: true,
-          pauseOnHover: true,
-        });
-      } catch (error) {
-        toast.update(toastId, {
-          render: error.message || "Logout Failed ❌",
-          type: "error",
-          isLoading: false,
-          autoClose: 4000,
-          closeOnClick: true,
-        });
-  
-        // console.log("Logout Error:", error.message);
-      }
-    };
+    const toastId = toast.loading("Logging out... Please wait");
+
+    try {
+      await logout();
+
+      toast.update(toastId, {
+        render: "Logout Successful 👋",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: error.message || "Logout Failed ❌",
+        type: "error",
+        isLoading: false,
+        autoClose: 4000,
+        closeOnClick: true,
+      });
+
+      // console.log("Logout Error:", error.message);
+    }
+  };
 
   return (
     <div className="drawer lg:drawer-open bg-base-200 min-h-screen">
@@ -281,8 +306,9 @@ const DashboardLayout = () => {
               {/* LOGOUT */}
               <li className="mt-2">
                 <button
-                onClick={logOutUser}
-                className="rounded-xl flex items-center gap-3 text-error hover:bg-error/10">
+                  onClick={logOutUser}
+                  className="rounded-xl flex items-center gap-3 text-error hover:bg-error/10"
+                >
                   <span
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="Logout"

@@ -1,13 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useAuth from "../../hooks/useAuth";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { FiEdit } from "react-icons/fi";
-import { IoTrashOutline } from "react-icons/io5";
-import Swal from "sweetalert2";
-import { Link } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
-const MyParcels = () => {
+const CompletedDeliveries = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
@@ -16,61 +12,23 @@ const MyParcels = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["myParcels", user.email],
+    queryKey: ["parcels", user?.email, "rider_assigned"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/parcels?email=${user?.email}`);
+      const res = await axiosSecure.get(
+        `/parcels/rider?riderEmail=${user?.email}&deliveryStatus=parcel_delivered`,
+      );
       return res.data;
     },
-    enabled: !!user?.email,
   });
-
   console.log(parcels);
 
-  const handleDelete = async (id, name) => {
-    // console.log(id, name);
-
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    });
-
-    if (!result.isConfirmed) return;
-
-    try {
-      const res = await axiosSecure.delete(`/parcels/${id}`);
-      if (res.data.deletedCount > 0) {
-        await refetch();
-        await Swal.fire({
-          title: "Deleted!",
-          text: `Your parcel '${name}' has been deleted.`,
-          icon: "success",
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Something went wrong",
-        text: error.message,
-      });
+  const calculatePayout = (parcel) => {
+    if(parcel.senderDistricts === parcel.receiverDistrict){
+      return parcel.cost * 0.8
+    }else{
+      return parcel.cost * 0.6
     }
-  };
-
-  const handlePayment = async (parcel) => {
-    const parcelInfo = {
-      cost: parcel.cost,
-      parcelId: parcel._id,
-      senderEmail: parcel.senderEmail,
-      parcelName: parcel.parcelName,
-    };
-    const res = await axiosSecure.post("/payment-checkout-session", parcelInfo);
-
-    window.location.assign(res.data.url);
-  };
+  }
 
   return (
     <div className="card bg-base-100 shadow-sm">
@@ -89,15 +47,15 @@ const MyParcels = () => {
             <thead>
               <tr>
                 <th>Cons ID</th>
-                {/* <th>Store</th> */}
                 <th>Recipient</th>
                 <th>Parcels Name</th>
-                <th>Status</th>
-                <th>Amount</th>
-                <th>Tracking Id</th>
+                <th>Payment Status</th>
                 <th>Delivery Status</th>
-                {/* <th>Payment</th> */}
+                <th>Rider Name</th>
+                <th>Amount</th>
+                <th>Payable Amount</th>
                 <th>Action</th>
+  
               </tr>
             </thead>
 
@@ -173,11 +131,7 @@ const MyParcels = () => {
                       </div>
                     </td>
 
-                    <td>৳{parcel.cost}</td>
-
-                    <td>
-                      <Link to={`/parcel-track/${parcel.trackingId}`}>{parcel.trackingId}</Link>
-                    </td>
+                    
 
                     <td>
                       <div
@@ -189,37 +143,20 @@ const MyParcels = () => {
                       >
                         {!parcel?.deliveryStatus
                           ? "Pay First"
-                          : parcel?.deliveryStatus}
+                          : parcel?.deliveryStatus === "parcel_delivered" ? "Delivered" : " "}
                       </div>
                     </td>
+                    <td>{parcel.riderName}</td>
+                    <td>৳{parcel?.cost}</td>
+                    <td>{calculatePayout(parcel)}</td>
 
                     <td>
                       <div className="flex gap-2 items-center">
-                        {parcel.status === "paid" ? (
-                          <span disabled className="btn btn-square btn-primary">
-                            Paid
-                          </span>
-                        ) : (
-                          <button
-                            onClick={() => handlePayment(parcel)}
-                            className="btn btn-square btn-primary text-amber-950"
-                          >
-                            Pay
+                        
+                          <button className="btn btn-secondary">
+                            Cash Out
                           </button>
-                        )}
-
-                        <button className="btn btn-square btn-info text-white">
-                          <FiEdit />
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            handleDelete(parcel._id, parcel.parcelName)
-                          }
-                          className="btn btn-square btn-error text-white"
-                        >
-                          <IoTrashOutline />
-                        </button>
+                        
                       </div>
                     </td>
                   </tr>
@@ -233,4 +170,4 @@ const MyParcels = () => {
   );
 };
 
-export default MyParcels;
+export default CompletedDeliveries;

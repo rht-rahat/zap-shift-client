@@ -20,6 +20,8 @@ const ApprovedRiders = () => {
       return res.data;
     },
   });
+
+  console.log(riders);
   
 
   const updateRiderStatus = async (rider, status) => {
@@ -90,7 +92,8 @@ const ApprovedRiders = () => {
                 <th>Email</th>
                 <th>Address</th>
                 <th>Bike Info</th>
-                <th>Status</th>
+                <th>Application Status</th>
+                <th>Work Status</th>
                 <th>Phone</th>
                 <th>Action</th>
               </tr>
@@ -168,6 +171,10 @@ const ApprovedRiders = () => {
                       >
                         {rider.status}
                       </div>
+                    </td>
+
+                    <td>
+                      {rider.workStatus}
                     </td>
 
                     <td>{rider.phone}</td>

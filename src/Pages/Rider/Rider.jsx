@@ -39,7 +39,7 @@ const Rider = () => {
 
     if(res.status === 200){
       toast.success(`${res.data.message ? res.data.message : "Rider Submission Successfully we reply in 20 days"}`)
-      // navigate("/")
+      navigate("/")
     }
 
 
