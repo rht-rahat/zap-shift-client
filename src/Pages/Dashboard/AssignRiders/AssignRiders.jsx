@@ -33,7 +33,7 @@ const AssignRiders = () => {
     },
   });
 
-  console.log("riders array", riders);
+  // console.log("riders array", riders);
 
   const handleOpenModalAssignRider = (parcel) => {
     setSelectedParcel(parcel);
@@ -76,7 +76,7 @@ const AssignRiders = () => {
         <div className="flex items-center justify-between mb-4">
           <h2 className="card-title">All Deliveries</h2>
 
-          <button className="btn btn-primary btn-sm">+ Add Delivery</button>
+           
         </div>
 
         <div className="overflow-x-auto">

@@ -138,9 +138,9 @@ const Navbar = () => {
            transition-all duration-300 ease-in-out
            ${isActive ? "font-bold text-[#1d0f0f]" : ""}`
               }
-              to="/dashboard/my-parcels"
+              to="/dashboard"
             >
-              My Parcels
+              Dashboard
             </NavLink>
           </li>
         </>

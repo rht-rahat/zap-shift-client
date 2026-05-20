@@ -13,11 +13,11 @@ const ParcelsHistory = () => {
     queryKey: ["parcels", user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/payment?email=${user?.email}`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     },
   });
-  console.log({ parcel: parcels?.length });
+  // console.log({ parcel: parcels?.length });
   return (
     <div className="card bg-base-100 shadow-sm">
       <h1 className="text-2xl font-extrabold px-5">
@@ -27,7 +27,7 @@ const ParcelsHistory = () => {
         <div className="flex items-center justify-between mb-4">
           <h2 className="card-title">All Deliveries</h2>
 
-          <button className="btn btn-primary btn-sm">+ Add Delivery</button>
+           
         </div>
 
         <div className="overflow-x-auto">

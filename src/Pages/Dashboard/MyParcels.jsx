@@ -24,7 +24,7 @@ const MyParcels = () => {
     enabled: !!user?.email,
   });
 
-  console.log(parcels);
+  // console.log(parcels);
 
   const handleDelete = async (id, name) => {
     // console.log(id, name);
@@ -66,6 +66,7 @@ const MyParcels = () => {
       parcelId: parcel._id,
       senderEmail: parcel.senderEmail,
       parcelName: parcel.parcelName,
+      trackingId: parcel.trackingId
     };
     const res = await axiosSecure.post("/payment-checkout-session", parcelInfo);
 
@@ -81,7 +82,7 @@ const MyParcels = () => {
         <div className="flex items-center justify-between mb-4">
           <h2 className="card-title">All Deliveries</h2>
 
-          <button className="btn btn-primary btn-sm">+ Add Delivery</button>
+           
         </div>
 
         <div className="overflow-x-auto">

@@ -58,7 +58,7 @@ const Register = () => {
 
       const res = await axiosSecure.post("/users", userInfo)
 
-      console.log("user Created in database:", res.data);
+      // console.log("user Created in database:", res.data);
 
       toast.update(toastId, {
         render: "Photo uploaded. Creating account...",

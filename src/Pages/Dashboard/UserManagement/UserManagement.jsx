@@ -17,7 +17,7 @@ const UserManagement = () => {
     queryKey: ["users", searchText],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users?searchText=${searchText}`);
-      console.log(res?.data);
+      // console.log(res?.data);
       return res?.data;
     },
   });
@@ -70,7 +70,7 @@ const UserManagement = () => {
           roleInfo,
         );
 
-        console.log(res.data);
+        // console.log(res.data);
 
         if (res.data.modifiedCount > 0) {
           refetch();
@@ -85,7 +85,7 @@ const UserManagement = () => {
   };
 
   const handleDelete = async (user) => {
-    console.log(user.displayName);
+    // console.log(user.displayName);
     // console.log(id,name);
     Swal.fire({
       title: "আপনি কি নিশ্চিত?",

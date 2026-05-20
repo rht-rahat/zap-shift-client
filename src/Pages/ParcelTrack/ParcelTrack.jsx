@@ -12,7 +12,7 @@ const ParcelTrack = () => {
       const res = await axiosInstance.get(`/trackings/${trackingId}/logs`);
       return res.data;
     },
-    // refetchInterval: 10000,
+    refetchInterval: 3000,
   });
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -30,7 +30,7 @@ const ParcelTrack = () => {
 
     return `${day} ${month} ${year} ${hours}:${minutes} ${ampm}`;
   };
-  console.log(trackings);
+  // console.log(trackings);
 
   if (isLoading) {
     return (
@@ -117,10 +117,10 @@ const ParcelTrack = () => {
               {/* status box */}
               <div className="timeline-end timeline-box w-full">
                 <h3 className="font-bold text-lg capitalize">
-                  {tracking.status ==="pending-pickup" ? "Pending Pickup" : tracking.status === "rider_assigned" ? "Rider Assigned" : tracking.status === "pick_up" ? "Pick Up" : tracking.status === "parcel_delivered" ? "Delivered" :" "}
+                  {tracking.status ==="pending-pickup" ? "Pending Pickup" : tracking.status === "rider_assigned" ? "Rider Assigned" : tracking.status === "pick_up" ? "Pick Up" : tracking.status === "parcel_delivered" ? "Delivered" : tracking.status === "parcel_created" ? "Parcel Created" : ""}
                 </h3>
 
-                <p className="text-sm text-gray-500 mt-1">{tracking.details ==="pending pickup" ? "Pending Pickup" : tracking.details === "rider_assigned" ? "Rider Assigned" : tracking.details === "pick_up" ? "Pick Up" : tracking.details === "parcel_delivered" ? "Delivered" :" "}</p>
+                <p className="text-sm text-gray-500 mt-1">{tracking.details ==="pending pickup" ? "Pending Pickup" : tracking.details === "rider_assigned" ? "Rider Assigned" : tracking.details === "pick_up" ? "Pick Up" : tracking.details === "parcel_delivered" ? "Delivered" :tracking.details === "parcel_created" ? "Parcel Created" : ""}</p>
 
                 {tracking.updatedBy && (
                   <p className="text-xs text-primary mt-2">

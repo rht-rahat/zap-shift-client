@@ -54,7 +54,7 @@ const SendParcel = () => {
     let cost = 0;
 
     if (isDocument) {
-      cost = isSameDistrict ? 60 : 80;
+      cost = isSameDistrict ? 70 : 80;
     } else {
       if (parcelWeight <= 3) {
         cost = isSameDistrict ? 110 : 150;
@@ -105,7 +105,7 @@ const SendParcel = () => {
         // reset();
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       Swal.fire({
         icon: "error",

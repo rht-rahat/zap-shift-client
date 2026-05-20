@@ -20,7 +20,7 @@ const CompletedDeliveries = () => {
       return res.data;
     },
   });
-  console.log(parcels);
+  // console.log(parcels);
 
   const calculatePayout = (parcel) => {
     if(parcel.senderDistricts === parcel.receiverDistrict){
@@ -39,7 +39,7 @@ const CompletedDeliveries = () => {
         <div className="flex items-center justify-between mb-4">
           <h2 className="card-title">All Deliveries</h2>
 
-          <button className="btn btn-primary btn-sm">+ Add Delivery</button>
+           
         </div>
 
         <div className="overflow-x-auto">

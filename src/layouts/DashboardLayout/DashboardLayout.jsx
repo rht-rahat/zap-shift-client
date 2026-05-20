@@ -26,15 +26,15 @@ import { toast } from "react-toastify";
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const { role } = useRole();
-  console.log("role On Dashboard:", role);
+  // console.log("role On Dashboard:", role);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const menuItems = [
-    // {
-    //   name: "Dashboard",
-    //   path: "/dashboard",
-    //   icon: <IoGridOutline size={20} />,
-    // },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <IoGridOutline size={20} />,
+    },
     ...(role === "user"
       ? [
           {

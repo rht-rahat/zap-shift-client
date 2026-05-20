@@ -16,7 +16,7 @@ const Payment = () => {
     }
   })
 
-  console.log(parcel);
+  // console.log(parcel);
   
   const handlePayment = async() => {
     const paymentInfo = {

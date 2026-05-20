@@ -22,9 +22,9 @@ const useAxiosSecure = () => {
     const responseIntercept = axiosSecure.interceptors.response.use((response)=>{
       return response;
     }, (error)=> {
-      console.log(error.response);
+      // console.log(error.response);
       const statusCode = error.response.status
-      console.log(statusCode);
+      // console.log(statusCode);
 
       if(statusCode === 401 || statusCode === 403){
         logout()

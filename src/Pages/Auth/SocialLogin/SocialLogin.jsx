@@ -18,7 +18,7 @@ const SocialLogin = () => {
     const toastId = toast.loading("Logging... Please wait");
     try {
        const res = await googleLogin();
-       console.log("from social",res.user);
+      //  console.log("from social",res.user);
       // console.log("User Login social login", result.user);
 
       const userInfo = {
@@ -27,7 +27,7 @@ const SocialLogin = () => {
         photoURL: res.user.photoURL
       }
       const result = await axiosSecure.post("/users", userInfo)
-      console.log("save in data base", result.data.message);
+      // console.log("save in data base", result.data.message);
 
       toast.update(toastId, {
         render: "Login Successful 🎉",
